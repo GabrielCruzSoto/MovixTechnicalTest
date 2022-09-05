@@ -10,6 +10,10 @@ import com.movix.developtest.entity.Employee;
 import com.movix.developtest.exceptions.EmployeeNotFoundException;
 import com.movix.developtest.repository.EmployeeRepository;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 @Service
 public class EmployeeService {
 
@@ -30,4 +34,17 @@ public class EmployeeService {
         }
         return optional.get();
     }
+
+    public List<Employee> getFirstNameAndLastName(String name) {
+        logger.info("getFirstNameAndLastName|name={} ", name);
+
+        Collection<Employee> cEmployees = this.employeeRepository.findByFirstNameAndLastName(name,name);
+
+        logger.info("getFirstNameAndLastName|name={} , result={}", name.toUpperCase(), cEmployees.size());
+        if (cEmployees.size()==0) {
+            throw new EmployeeNotFoundException("Not found..");
+        }
+        return new ArrayList<Employee>(cEmployees);
+    }
+
 }
